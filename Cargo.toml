@@ -1,10 +1,5 @@
-[package]
-name = "bf_bf"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-bf_run = { path = "bf_run" }
-
-[profile.dev]
-overflow-checks = false
+[workspace]
+members = [
+    "bf_run",
+    "bf_bf"
+]
