@@ -1,4 +1,5 @@
 use bf_run::Runtime;
+use itertools::repeat_n;
 
 fn main() {
     let mut runtime = Runtime::new();
@@ -63,13 +64,29 @@ impl BfState {
             return self.generate();
         };
     }
+
+    fn generate(&mut self) -> &str {
+        self.code.clear();
+        self.code.extend(self.state.iter().map(|piece| match piece {
+            BfStatePiece::Print => '.',
+            BfStatePiece::LoopStart => '[',
+            BfStatePiece::LoopEnd => ']',
+            BfStatePiece::Increase => '+',
+            BfStatePiece::Decrease => '-',
+            BfStatePiece::MoveNext => '>',
+            BfStatePiece::MovePrevious => '<',
+        }));
+        self.code.extend(repeat_n(']', self.open_loops));
+        self.code.as_str()
+    }
 }
 
 enum BfStatePiece {
     Print,
     LoopStart,
-    Increase(usize),
-    Decrease(usize),
+    LoopEnd,
+    Increase,
+    Decrease,
     MoveNext,
     MovePrevious,
 }
